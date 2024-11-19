@@ -9,8 +9,11 @@ public class Home : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            Debug.Log("You win!");
             enabled = true;
+            Frogger frogger = collision.GetComponent<Frogger>();
+            frogger.gameObject.SetActive(false);
+            frogger.Invoke(nameof(frogger.Respawn), 1f);
+
         }
     }
     private void OnEnable()

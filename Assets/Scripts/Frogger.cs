@@ -12,9 +12,12 @@ public class Frogger : MonoBehaviour
     public Sprite jumpSprite;
     public Sprite deathSprite;
     public Camera mainCamera;
+
+    private Vector3 SpawnPosition;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
+        SpawnPosition = transform.position;
     }
     private void Update()
     {
@@ -94,10 +97,21 @@ public class Frogger : MonoBehaviour
     }
     private void Death()
     {
-        Debug.Log("Death");
+        StopAllCoroutines();
         transform.rotation = Quaternion.Euler(0, 0, 0);
         spriteRenderer.sprite = deathSprite;
         enabled = false;
+
+        Invoke(nameof(Respawn), 1f);
+    }
+    public void Respawn()
+    {
+        StopAllCoroutines();
+        enabled = true;
+        spriteRenderer.sprite = idleSprite;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        gameObject.SetActive(true);
+        transform.position = SpawnPosition;
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
