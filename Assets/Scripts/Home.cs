@@ -10,9 +10,8 @@ public class Home : MonoBehaviour
         if (collision.tag == "Player")
         {
             enabled = true;
-            Frogger frogger = collision.GetComponent<Frogger>();
-            frogger.gameObject.SetActive(false);
-            frogger.Invoke(nameof(frogger.Respawn), 1f);
+
+            FindObjectOfType<GameManager>().HomeHasBeenOccupied();
 
         }
     }
