@@ -1294,6 +1294,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5fd72b574b12a643b8707c657c5ba30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleSprite: {fileID: 21300000, guid: d9cfeefd26f1f4b40b716a8385116465, type: 3}
+  jumpSprite: {fileID: 21300000, guid: fc8cc835ca0b18f4984d239673c291bd, type: 3}
 --- !u!1001 &980576364
 PrefabInstance:
   m_ObjectHideFlags: 0
