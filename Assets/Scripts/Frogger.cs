@@ -14,6 +14,8 @@ public class Frogger : MonoBehaviour
     public Camera mainCamera;
 
     private Vector3 SpawnPosition;
+
+    private float farthestRow;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -63,6 +65,13 @@ public class Frogger : MonoBehaviour
         }
         else
         {
+            if(direction.y > farthestRow)
+            {
+                farthestRow = direction.y;
+                FindObjectOfType<GameManager>().AdvencedRow();
+
+            }
+
             StartCoroutine(MoveCoroutine(direction));
         }
     }
@@ -95,18 +104,19 @@ public class Frogger : MonoBehaviour
 
         return position;
     }
-    private void Death()
+    public void Death()
     {
         StopAllCoroutines();
         transform.rotation = Quaternion.Euler(0, 0, 0);
         spriteRenderer.sprite = deathSprite;
         enabled = false;
 
-        Invoke(nameof(Respawn), 1f);
+        FindObjectOfType<GameManager>().Died();
     }
     public void Respawn()
     {
         StopAllCoroutines();
+        farthestRow = 0;
         enabled = true;
         spriteRenderer.sprite = idleSprite;
         transform.rotation = Quaternion.Euler(0, 0, 0);
