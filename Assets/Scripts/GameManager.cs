@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,6 +9,12 @@ public class GameManager : MonoBehaviour
     private Home[] homes;
     private int score;
     private int lives;
+
+    public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI livesText;
+    public TextMeshProUGUI timeText;
+
+    public GameObject gameOverPanel;
 
     private int time;
 
@@ -20,8 +27,9 @@ public class GameManager : MonoBehaviour
     {
         NewGame();
     }
-    private void NewGame()
+    public void NewGame()
     {
+        gameOverPanel.SetActive(false);
         SetScore(0);
         SetLives(3);
         NewLevel();
@@ -44,20 +52,24 @@ public class GameManager : MonoBehaviour
     private IEnumerator Timer(int time)
     {
         this.time = time;
+        timeText.text = this.time.ToString();
         while (this.time > 0)
         {
             yield return new WaitForSeconds(1);
             this.time--;
+            timeText.text = this.time.ToString();
         }
         frogger.Death();
     }
     private void SetScore(int value)
     {
         score = value;
+        scoreText.text = score.ToString();
     }
     private void SetLives(int value)
     {
         lives = value;
+        livesText.text = lives.ToString();
     }
     public void HomeHasBeenOccupied()
     {
@@ -95,6 +107,19 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         Debug.Log("Game Over");
+        frogger.gameObject.SetActive(false);
+        gameOverPanel.SetActive(true);
+        StopAllCoroutines();
+        StartCoroutine(CheckForPlayAgain());
+
+    }
+    private IEnumerator CheckForPlayAgain()
+    {
+        while (!Input.GetKeyDown(KeyCode.Return))
+        {
+            yield return null;
+        }
+        NewGame();
     }
 
         private bool AllHomesAreOccupied()
