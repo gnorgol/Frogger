@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4385065471567731612}
   - component: {fileID: 2476068363168240730}
   - component: {fileID: 5838484449721842667}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LogEnd
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -141,7 +141,7 @@ GameObject:
   - component: {fileID: 6610192283806687098}
   - component: {fileID: 5785770932503036656}
   - component: {fileID: 319317010192352857}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LogMiddle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 1864110835227802040}
   - component: {fileID: 282349381040687184}
   - component: {fileID: 8322208582006240050}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LogStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3654533519801396635}
   - component: {fileID: -8923260204678926619}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Logs3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

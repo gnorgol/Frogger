@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,9 +6,12 @@ using UnityEngine;
 public class Frogger : MonoBehaviour
 {
     private SpriteRenderer spriteRenderer;
+    
 
     public Sprite idleSprite;
     public Sprite jumpSprite;
+    public Sprite deathSprite;
+    public Camera mainCamera;
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -37,9 +41,27 @@ public class Frogger : MonoBehaviour
     }
     private void Move(Vector3 direction)
     {
-        //transform.position += direction;
+        Collider2D plateform = Physics2D.OverlapBox(transform.position + direction, Vector2.zero,0f, LayerMask.GetMask("Plateform"));
+        Collider2D obstacle = Physics2D.OverlapBox(transform.position + direction, Vector2.zero, 0f, LayerMask.GetMask("Obstacle"));
 
-        StartCoroutine(MoveCoroutine(direction));
+        
+
+        if (plateform != null) {
+            transform.SetParent(plateform.transform);
+        }
+        else
+        {
+            transform.SetParent(null);
+        }
+        if (obstacle != null && plateform == null)
+        {
+            transform.position = transform.position + direction;
+            Death();
+        }
+        else
+        {
+            StartCoroutine(MoveCoroutine(direction));
+        }
     }
 
     private IEnumerator MoveCoroutine(Vector3 direction)
@@ -57,8 +79,34 @@ public class Frogger : MonoBehaviour
             yield return null;
         }
 
-        transform.position = targetPosition;
+        transform.position = ClampPositionToCameraBounds(targetPosition);
         spriteRenderer.sprite = idleSprite;
     }
+    private Vector3 ClampPositionToCameraBounds(Vector3 position)
+    {
+        Vector3 minBounds = mainCamera.ViewportToWorldPoint(new Vector3(0, 0, mainCamera.nearClipPlane));
+        Vector3 maxBounds = mainCamera.ViewportToWorldPoint(new Vector3(1, 1, mainCamera.nearClipPlane));
+
+        position.x = Mathf.Clamp(position.x, minBounds.x, maxBounds.x);
+        position.y = Mathf.Clamp(position.y, minBounds.y, maxBounds.y);
+
+        return position;
+    }
+    private void Death()
+    {
+        Debug.Log("Death");
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+        spriteRenderer.sprite = deathSprite;
+        enabled = false;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Obstacle") && enabled && transform.parent == null)
+        {
+            Death();
+        }
+
+    }
+
 
 }
